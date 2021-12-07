@@ -76,23 +76,23 @@ answers = {
     'Studios': ''
             }
 #1
-print('Введите желаемый минимальный рейтинг: ')
+print('Введите желаемый минимальный рейтинг (если вам это не важно, нажмите "ENTER"): ')
 answers['Rating Score'] = input()
 
 #2
-print('Укажите минимальное количество голосов:')
+print('Укажите минимальное количество голосов (если вам это не важно, нажмите "ENTER"):')
 answers['Number Votes'] = input()
 
 #3
-print('Укажите желаемый(-ые) жанр(ы) :')
+print('Укажите желаемый(-ые) жанр(ы) (если вам это не важно, нажмите "ENTER"):')
 answers['Tags'] = input()
 
 #4
-print('Какие предупреждения стоит исключить?')
+print('Какие предупреждения стоит исключить?(если вам это не важно, нажмите "ENTER")')
 answers['Content Warning'] = input()
 
 #5
-print('Формат показа (TV, Web, Movie, etc):')
+print('Формат показа (TV, Web, Movie, etc) (если вам это не важно, нажмите "ENTER"):')
 answers['Type'] = input()
 
 #6
@@ -112,7 +112,7 @@ print('Сезоны (если вам это не важно, нажмите "ENT
 answers['Season'] = input()
 
 #10
-print('Студия:')
+print('Студия (если вам это не важно, нажмите "ENTER"):')
 answers['Studios'] = input()
 
 with open('anime.csv', 'r', encoding='utf-8') as file:
