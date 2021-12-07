@@ -129,3 +129,4 @@ final = finish(rating_score, number_votes, tags, content_warning, others)
 with open('final.txt', 'w', encoding='utf-8') as file:
     for name in final:
         file.write(name + '\n')
+print('Отчёт по вашим критериям составлен в файле "final.txt".')
