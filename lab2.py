@@ -73,12 +73,12 @@ questions = ['Какой желаемый минимальный рейтинг 
              'Какое количество сезонов? ',
              'Какая студия? ']
 
-end_question = '>>>Если вам это не важно, нажмите "ENTER"'
+add_question = '>>>Если вам это не важно, нажмите "ENTER"'
 
 response = []
 
 for question in questions:
-    print(question + '\n' + end_question)
+    print(question + '\n' + add_question)
     response.append(input())
 
 answers = dict(zip(keys, response))
