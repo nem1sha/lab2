@@ -1,119 +1,88 @@
 import csv
 
+
 def rating(file_reader):
-    animes = []
+    anime_list = []
     for row in file_reader:
         if float(row['Rating Score']) > float(answers['Rating Score']) or answers['Rating Score'] == '':
-            animes.append(row['Name'])
-    return animes
+            anime_list.append(row['Name'])
+    return anime_list
+
 
 def votes(file_reader):
-    animes = []
+    anime_list = []
     for row in file_reader:
         if float(row['Number Votes']) > float(answers['Number Votes']) or answers['Number Votes'] == '':
-            animes.append(row['Name'])
-    return animes
+            anime_list.append(row['Name'])
+    return anime_list
+
 
 def genre(file_reader):
-    animes = []
+    anime_list = []
     for row in file_reader:
-        t = answers['Tags']
-        r = row['Tags']
-        for i in range(len(r)):
-            for j in range(len(t)):
-                if r[i] == t[j] or t[j] == '':
-                    animes.append(row['Name'])
-    return animes
+        answer = answers['Tags']
+        series = row['Tags']
+        for i in range(len(series)):
+            for j in range(len(answer)):
+                if series[i] == answer[j] or answer[j] == '':
+                    anime_list.append(row['Name'])
+    return anime_list
+
 
 def content(file_reader):
-    animes = []
+    anime_list = []
     for row in file_reader:
-        r = row['Content Warning']
-        c = answers['Content Warning']
-        for i in range(len(r)):
-            for j in range(len(c)):
-                if r[i] == c[j] or c[j] == '' or (r[i] == 'Unknown' and c[j] == ''):
-                    animes.append(row['Name'])
-    return animes
+        series = row['Content Warning']
+        answer = answers['Content Warning']
+        for i in range(len(series)):
+            for j in range(len(answer)):
+                if series[i] == answer[j] or answer[j] == '' or (series[i] == 'Unknown' and answer[j] == ''):
+                    anime_list.append(row['Name'])
+    return anime_list
+
 
 def filter(file_reader):
-    animes = []
+    anime_list = []
     for row in file_reader:
         k = 0
         for i in ['Type', 'Episodes', 'StartYear', 'EndYear', 'Season', 'Studios']:
             if row[i] == answers[i] or answers[i] == '' or (row[i] == 'Unknown' and answers[i] == ''):
                 k += 1
         if k == 6:
-            animes.append(row['Name'])
-    return animes
+            anime_list.append(row['Name'])
+    return anime_list
+
 
 def finish(a, b, c, d, e):
-    final = []
-    for f in a:
-        for g in b:
-            for h in c:
-                for i in d:
-                    for j in e:
-                        if a[f] == b [g]:
-                            if b[g] == c[h]:
-                                if c[h] == d[i]:
-                                    if d[i] == e[j]:
-                                        final.append(a[f])
-    return final
+    top_anime = list(set(a) & set(b) & set(c) & set(d) & set(e))
+    return top_anime
 
 
+keys = ['Rating Score', 'Number Votes', 'Tags',
+        'Content Warning', 'Type', 'Episodes',
+        'StartYear', 'EndYear', 'Season', 'Studios']
 
-answers = {
-    'Rating Score': '',
-    'Number Votes': '',
-    'Tags': '',
-    'Content Warning': '',
-    'Type': '',
-    'Episodes': '',
-    'StartYear': '',
-    'EndYear': '',
-    'Season': '',
-    'Studios': ''
-            }
-#1
-print('Введите желаемый минимальный рейтинг (если вам это не важно, нажмите "ENTER"): ')
-answers['Rating Score'] = input()
+questions = ['Какой желаемый минимальный рейтинг для вас? ',
+             'Какое минимальное количество голосов? ',
+             'Какой(-ие) желаемый(-ые) жанр(ы)? ',
+             'Какие предупреждения стоит исключить? ',
+             'Какой формат показа (TV, Web, Movie, etc)? ',
+             'Какое количество эпизодов? ',
+             'Какой год начала показа? ',
+             'Какой год окончания? ',
+             'Какое количество сезонов? ',
+             'Какая студия? ']
 
-#2
-print('Укажите минимальное количество голосов (если вам это не важно, нажмите "ENTER"):')
-answers['Number Votes'] = input()
+end_question = '>>>Если вам это не важно, нажмите "ENTER"'
 
-#3
-print('Укажите желаемый(-ые) жанр(ы) (если вам это не важно, нажмите "ENTER"):')
-answers['Tags'] = input()
+response = []
 
-#4
-print('Какие предупреждения стоит исключить?(если вам это не важно, нажмите "ENTER")')
-answers['Content Warning'] = input()
+for question in questions:
+    print(question + '\n' + end_question)
+    response.append(input())
 
-#5
-print('Формат показа (TV, Web, Movie, etc) (если вам это не важно, нажмите "ENTER"):')
-answers['Type'] = input()
+answers = dict(zip(keys, response))
 
-#6
-print('Количество эпизодов (если вам это не важно, нажмите "ENTER"):')
-answers['Episodes'] = input()
-
-#7
-print('Год начала показа (если вам это не важно, нажмите "ENTER"):')
-answers['StartYear'] = input()
-
-#8
-print('Год окончания (если вам это не важно, нажмите "ENTER"):')
-answers['EndYear'] = input()
-
-#9
-print('Сезоны (если вам это не важно, нажмите "ENTER"):')
-answers['Season'] = input()
-
-#10
-print('Студия (если вам это не важно, нажмите "ENTER"):')
-answers['Studios'] = input()
 
 with open('anime.csv', 'r', encoding='utf-8') as file:
     file_reader = csv.DictReader(file, delimiter=",")
@@ -124,9 +93,11 @@ tags = genre(file_reader)
 content_warning = content(file_reader)
 others = filter(file_reader)
 
-final = finish(rating_score, number_votes, tags, content_warning, others)
+top_anime = finish(rating_score, number_votes, tags, content_warning, others)
 
 with open('final.txt', 'w', encoding='utf-8') as file:
-    for name in final:
+    for name in top_anime:
         file.write(name + '\n')
+
+
 print('Отчёт по вашим критериям составлен в файле "final.txt".')
